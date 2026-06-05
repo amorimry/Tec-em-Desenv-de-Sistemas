@@ -17,6 +17,6 @@ musica13 = Musica("Cop Car", "Mitski", "Grunge", 2020)
 musica14 = Musica("Memories", "Conan Gray", "Pop", 2022)
 musica15 = Musica("Die a Little", "YUNGBLUD", "Alternative Rock", 2019)
 
-musica10.detalhes_da_musica()
+musica3.detalhes_da_musica()
 
 musica11.detalhes_da_musica()
