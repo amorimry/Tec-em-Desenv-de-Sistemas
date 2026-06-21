@@ -49,5 +49,8 @@ class Pessoa():
         self.falando = False
         print(f"{self.nome} parou de falar.")
 
+    # def ano_de_nascimento(self):
+    #     return self.ano_atual - self.idade
+    
     def ano_de_nascimento(self):
-        return self.ano_atual - self.idade
+        print(f"{self.nome} nasceu no ano de {self.ano_atual - self.idade}")
