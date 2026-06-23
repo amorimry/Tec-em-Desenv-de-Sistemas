@@ -1,4 +1,4 @@
-from classPessoa import Pessoa
+from classTeste import Pessoa
 
 p1 = Pessoa("Luiz", 20) # criando um objeto a partir de uma classe; utilizando um "molde"; oq entra dentro é atributo/variavel da classe
 p2 = Pessoa("João", 18)

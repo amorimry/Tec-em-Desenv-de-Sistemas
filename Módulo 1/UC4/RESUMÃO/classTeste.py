@@ -1,4 +1,6 @@
-class Pessoa():
+# classe é um modelo, tipo um molde para poder criar objetos
+
+class Pessoa(): # define como um objeto vai ser criado
     ano_atual = 2026 # esse valor vai ser o mesmo para todos os objetos dessa classe
 
     def __init__(self, nome, idade, comendo = False, falando = False):
