@@ -17,7 +17,7 @@ class Pessoa:
 """)
 
 # classe filha (Subclasse)
-    # herda os recursos da classe mãe
+    # herda os recursos da classe pai
 class Funcionario(Pessoa):
     def __init__(self, nome, idade, cpf, salario, cargo):
         super().__init__(nome, idade, cpf)

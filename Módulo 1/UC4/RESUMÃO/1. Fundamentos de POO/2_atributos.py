@@ -4,36 +4,58 @@
 
 # os atributos são definidos dentro do método construtor __init__
 
-class Funcionario:
+class Pessoa:
 
     ano_atual = 2026 # esse valor vai ser o mesmo para todos os objetos dessa classe
 
-    def __init__(self, nome, salario, idade, cargo):
-        self.nome = nome
-        self.salario = salario
-        self.idade = idade
-        self.cargo = cargo
+    def __init__(self, nome, idade, cpf):
+        self.nome = nome # público
+        self._idade = idade # protegido
+        self.__cpf = cpf # privado
 
-# aqui a classe Funcionario possui 4 atributos: nome, salário, idade e cargo
+# aqui a classe Pessoa possui 4 atributos: nome, salário, idade e cargo
 
-# atributos de instância:
+# == VISIBILIDADE DO ATRIBUTO ==
+    
+# 'nome' é um atributo público, podendo ser acessado diretamente fora da classe e alterado
+
+# 'idade' é um atributo protegido por conveção, pois vem com um _ após o self
+        # aqui mostra que o atributo 'idade' deve ser acessado apenas pela própria classe e por suas classes filhas
+        # um _ é apenas uma convenção, ele indica para outros programadores que o atributo não deveria ser acessado diretamente fora da classe, mas o Python não impede que você acesse e altere esse atributo fora da classe
+
+# 'cpf' é um atributo privado, pois vem com dois _ após o self
+        # isso mostra que o atributo 'cpf' só pode ser acessado ou alterado dentro da própria classe
+
+# == LOCALIDADE DO ATRIBUTO ==
+
+# atributos de instância (aqueles que pertencem a um objeto especifico):
     # self.nome
     # self.salario
     # self.idade
     # self.cargo
 
-# atributos de classe:
+# atributos de classe (pertence a classe como um todo):
     # ano_atual
+
+    def apresentar_pessoa(self):
+        print(f"""
+-- DADOS DA PESSOA --
+              
+        Nome: {self.nome}
+        Idade: {self._idade} anos
+        CPF: {self.__cpf}
+""")
 
 if __name__ == "__main__":
 
 # a criação de um objeto é chamado de instanciar uma classe
 
-    func1 = Funcionario("Paulo", 1500, 21, "Auxiliar Administrativo")
-    func2 = Funcionario("Liz", 1800, 24, "Marketing") # instância = objeto
+    pessoa1 = Pessoa("Paulo", 21, "02145632554")
 
-    print(func1.nome)
-    print(func1.idade)
+    pessoa1.apresentar_pessoa()
 
-    print(func2.nome)
-    print(func2.idade)
+    pessoa1.nome = "Marcos"
+    pessoa1._idade = 22
+    pessoa1.cpf = "11111111111111"
+
+    pessoa1.apresentar_pessoa()
