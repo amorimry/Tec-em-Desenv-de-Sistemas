@@ -1,3 +1,6 @@
+# a palavra "polimorfismo" significa "muitas formas" e, em programação, refere-se a métodos/funções/operadores com o mesmo nome que podem ser executados em vários objetos ou classes
+    # len() é um exemplo de polimorfismo
+
 # é a capacidade de diferentes classes responderem à uma mesma chamada de um método ou função, mas sendo específico para cada objeto
 
 # permite aos programadores usar uma única interface com diferentes formas subjacentes
