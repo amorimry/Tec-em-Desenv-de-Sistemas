@@ -4,7 +4,7 @@
 # isso é feito através do módulo nativo do python, o abc (Abstract Base Classes)
 
 # tipos:
-    # natura
+    # natural
     # formal (utiliza a importação de algo, tipo bibliotecas e afins)
 
 from abc import ABC, abstractmethod
@@ -37,3 +37,6 @@ pagamento1.processar_pagamento(150.00)
 pagamento2 = Boleto()
 pagamento2.processar_pagamento(150.00)
 
+
+# A abstração (usando a biblioteca abc) serve exatamente para criar um "contrato" ou um molde obrigatório para as outras classes.
+# Quando você usa o módulo abc (Abstract Base Classes) e o decorador @abstractmethod, você está dizendo para o Python: "Qualquer classe que tentar ser filha desta classe base DEVE ter esse método preenchido, senão eu nem deixo o programa rodar".
