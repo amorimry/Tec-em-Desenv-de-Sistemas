@@ -1,3 +1,13 @@
+from abc import ABC, abstractmethod
+
+class BancoAbstracao(ABC): # aqui entra a abstração
+    pass
+
+    @abstractmethod
+    def fazer_login(self):
+        pass
+
+
 class Banco():
     def __init__(self, cliente, saldo, senha, status = False):
         self.cliente = cliente
