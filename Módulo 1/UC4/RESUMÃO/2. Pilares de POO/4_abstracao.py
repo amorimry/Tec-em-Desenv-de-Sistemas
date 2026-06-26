@@ -3,6 +3,10 @@
 
 # isso é feito através do módulo nativo do python, o abc (Abstract Base Classes)
 
+# tipos:
+    # natura
+    # formal (utiliza a importação de algo, tipo bibliotecas e afins)
+
 from abc import ABC, abstractmethod
 
 # 1. Cria-se a classe abstrata herdando de ABC
