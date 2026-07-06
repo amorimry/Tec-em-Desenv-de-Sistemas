@@ -42,6 +42,10 @@ class Funcionario:
 
 # o self é entendido como algo que aponta para a instância atual que está executando o método
 
+    # MÉTODOS ESPECIAIS
+    def __str__ (self):
+        return f"O funcionário {self.nome}, com {self.idade} anos de idade, recebe R$ {self.salario} trabalhando no cargo de {self.cargo}."
+
 if __name__ == "__main__":
 
     func1 = Funcionario("Paulo", 1500, 21, "Auxiliar Administrativo")
@@ -51,3 +55,5 @@ if __name__ == "__main__":
     func2.apresentar_func() # chamando o método para rodar
     func2.aumentar_salario(20) # vai aumentar o salário mais 20% do valor atual
     func2.apresentar_func() # mudou a informação do salário no objeto em que rodou o método
+
+    print(func2)
