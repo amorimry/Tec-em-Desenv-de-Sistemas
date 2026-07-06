@@ -41,7 +41,7 @@ if __name__ == "__main__":
     livro1 = Livro("A cabeça do santo", "Socorro Acioli")
     
     livro1.detalhes()
-    livro1.reputacao()
+    livro1.reputacao(2)
 
     print(livro1.reputacao(5))
     print(livro1.reputacao(2))
