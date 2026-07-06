@@ -6,6 +6,10 @@ class Aluno():
         self.nome = nome
         self.matricula = matricula
 
+# esse método serve para acessas informações do objeto, sem precisar chamar o método para fazer isso, é como se fosse um encurtador de caminho
+    def __str__(self):
+        return f"O(a) aluno(a) {self.nome} está cadastrado com a matrícula {self.matricula}"
+
     def exibir_informacoes(self):
         print(f"""
         -- Informações do aluno(a) --
@@ -29,5 +33,6 @@ if __name__ == "__main__":
     aluno2 = Aluno("Fernanda", 54421558)
 
     aluno1.exibir_informacoes()
+    print(aluno2)
 
     aluno2.aprovado_reprovado("aprovado")
