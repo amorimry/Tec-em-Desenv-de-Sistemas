@@ -28,12 +28,12 @@ class Livro():
     def reputacao(self, nota):
         self.notas_de_reputacao.append(nota)
         media_reputacao = sum(self.notas_de_reputacao) / len(self.notas_de_reputacao)
-        if media_reputacao >= 4.5 and media_reputacao <= 5:
-            return f"Reputação excelente - Média: {media_reputacao}"
-        elif media_reputacao >= 3.5 and media_reputacao < 4.5:
-            return f"Reputação mais ou menos - Média: {media_reputacao}"
-        elif media_reputacao >= 0 and media_reputacao < 3.5:
-            return f"Reputação péssima - Média: {media_reputacao}"
+        if media_reputacao >= 4.5:
+            return f"Excelente (Altamente Recomendado) - {media_reputacao:.2f}"
+        elif media_reputacao >= 3.5:
+            return f"Boa (Recomendado) - {media_reputacao:.2f}"
+        else:
+            return f"Regular  - {media_reputacao:.2f}"
 
 
 if __name__ == "__main__":
@@ -41,7 +41,6 @@ if __name__ == "__main__":
     livro1 = Livro("A cabeça do santo", "Socorro Acioli")
     
     livro1.detalhes()
-    livro1.reputacao(2)
 
     print(livro1.reputacao(5))
     print(livro1.reputacao(2))
