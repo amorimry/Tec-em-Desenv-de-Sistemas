@@ -1,5 +1,5 @@
-from classSalaoDeBeleza import Cliente, Servico, Agendamento
-import utilsSalaoDeBeleza
+from classes import Cliente, Servico, Agendamento
+import utils
 
 lista_clientes = [
     Cliente("Ana Silva", "85952478563", "23562485692", "ana.silva@email.com"),
@@ -43,7 +43,7 @@ while True:
         print(f"""
 {"="*5} Cadastrar Cliente {"="*5}
 """)
-        dados_cliente = utilsSalaoDeBeleza.cadastrar_cliente() #cadastra meu cliente, pelo utils, e me retorna o cliente com as informações em uma lista, jogando dentro da variável dados_cliente
+        dados_cliente = utils.cadastrar_cliente() #cadastra meu cliente, pelo utils, e me retorna o cliente com as informações em uma lista, jogando dentro da variável dados_cliente
 
         novo_cliente = Cliente(
             dados_cliente["nome"],
@@ -55,14 +55,12 @@ while True:
         lista_clientes.append(novo_cliente)
 
         print("Cliente cadastrado com sucesso!")
-
-        utilsSalaoDeBeleza.exibir_cliente(lista_clientes)
   
     elif op == "2":
         print(f"""
 {"="*5} Cadastrar Serviço {"="*5}
 """)
-        dados_servico = utilsSalaoDeBeleza.cadastrar_servico()
+        dados_servico = utils.cadastrar_servico()
 
         novo_servico = Servico(
             dados_servico["nome"],
@@ -77,20 +75,29 @@ while True:
         print(f"""
 {"="*5} Agendar Atendimentos {"="*5}
 """)
-        utilsSalaoDeBeleza.agendar_atendimento(lista_clientes, lista_servicos)
+        dados_agendamento = utils.agendar_atendimento(lista_clientes, lista_servicos, lista_agendamentos)
+
+        novo_agendamento = Agendamento(
+            dados_agendamento["cliente"],
+            dados_agendamento["serviço"],
+            dados_agendamento["data"],
+            dados_agendamento["horário"]
+        )
+
+        lista_agendamentos.append(novo_agendamento)
 
     elif op == "4":
         print(f"""
 {"="*5} Lista de Agendamentos {"="*5}
 """)
-        utilsSalaoDeBeleza.exibir_agendamentos(lista_agendamentos)
+        utils.exibir_agendamentos(lista_agendamentos)
 
     elif op == "5":
         print(f"""
 {"="*5} Cancelar Agendamento {"="*5}
 """)
-        utilsSalaoDeBeleza.exibir_agendamentos(lista_agendamentos)
-        utilsSalaoDeBeleza.remover_agendamento(lista_agendamentos)
+        utils.exibir_agendamentos(lista_agendamentos)
+        utils.remover_agendamento(lista_agendamentos)
 
     elif op == "0":
         print("Encenrrando programa, até breve!")
