@@ -15,7 +15,13 @@ lista_servicos = [
     Servico("Pedicure", 40.0, "45"),
     Servico("Hidratação", 120.0, "60")
 ]
-lista_agendamentos = []
+lista_agendamentos = [
+    Agendamento("Ana Silva", "Corte Feminino", "10/07/2026", "09:00"),
+    Agendamento("Bruno Souza", "Hidratação", "10/07/2026", "10:00"),
+    Agendamento("Carla Oliveira", "Manicure", "11/07/2026", "14:00"),
+    Agendamento("Diego Santos", "Pedicure", "11/07/2026", "15:00"),
+    Agendamento("Elena Costa", "Escova", "12/07/2026", "11:30")
+]
 
 print(f"""
 {"="*10} Bem vindo ao Sistema Beauty Manager {"="*10}
@@ -27,7 +33,7 @@ while True:
         1. Cadastrar Cliente
         2. Cadastrar Serviço
         3. Agendar Atendimento
-        4. Listar Agendamentos
+        4. Lista de Agendamentos
         5. Cancelar Agendamento
 
         0. Sair do Sistema Beauty Manager
@@ -35,7 +41,7 @@ while True:
     op = input("Digite sua opção: ")
     if op == "1":
         print(f"""
-{"="*5} Cadastra Cliente {"="*5}
+{"="*5} Cadastrar Cliente {"="*5}
 """)
         dados_cliente = utilsSalaoDeBeleza.cadastrar_cliente() #cadastra meu cliente, pelo utils, e me retorna o cliente com as informações em uma lista, jogando dentro da variável dados_cliente
 
@@ -54,7 +60,7 @@ while True:
   
     elif op == "2":
         print(f"""
-{"="*5} Cadastra Serviço {"="*5}
+{"="*5} Cadastrar Serviço {"="*5}
 """)
         dados_servico = utilsSalaoDeBeleza.cadastrar_servico()
 
@@ -72,14 +78,20 @@ while True:
 {"="*5} Agendar Atendimentos {"="*5}
 """)
         utilsSalaoDeBeleza.agendar_atendimento(lista_clientes, lista_servicos)
+
     elif op == "4":
         print(f"""
-{"="*5} Listar Agendamentos {"="*5}
+{"="*5} Lista de Agendamentos {"="*5}
 """)
+        utilsSalaoDeBeleza.exibir_agendamentos(lista_agendamentos)
+
     elif op == "5":
         print(f"""
 {"="*5} Cancelar Agendamento {"="*5}
 """)
+        utilsSalaoDeBeleza.exibir_agendamentos(lista_agendamentos)
+        utilsSalaoDeBeleza.remover_agendamento(lista_agendamentos)
+
     elif op == "0":
         print("Encenrrando programa, até breve!")
         break

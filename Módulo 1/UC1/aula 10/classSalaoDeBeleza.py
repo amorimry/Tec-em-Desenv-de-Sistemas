@@ -17,3 +17,12 @@ class Agendamento():
         self.servico = servico
         self.data = data
         self.horario = horario
+
+    def exibir_agendamento(self):
+        print(f"""
+    == Agendamento ==
+Cliente: {self.cliente}
+Serviço: {self.servico}
+Data: {self.data}
+Horário: {self.horario}
+""")

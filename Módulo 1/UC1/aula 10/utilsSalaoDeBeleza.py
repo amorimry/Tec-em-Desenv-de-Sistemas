@@ -1,3 +1,5 @@
+from classSalaoDeBeleza import Cliente, Servico, Agendamento
+
 def cadastrar_cliente():
     nome = input("Digite o nome do cliente: ")
     telefone = input("Digite o número do telefone do cliente: ")
@@ -24,21 +26,66 @@ def cadastrar_servico():
 
 def exibir_cliente(lista):
     for i, nome_cliente in enumerate(lista):
-        print(f"{i+1}. {nome_cliente.nome}")
+        print(f"{i+1}. {nome_cliente.nome}\n")
+
+def exibir_servicos(lista):
+    for i, nome_servico in enumerate(lista):
+        print(f"{i+1}. {nome_servico.nome}\n")
+
+def exibir_agendamentos(lista):
+    for i, agendamento in enumerate(lista):
+        print(f"""{i+1} - {agendamento.cliente} | {agendamento.servico}
+{agendamento.data} | {agendamento.horario}H\n""")
 
 def agendar_atendimento(lista1, lista2):
     nomes_clientes = []
+    nomes_servicos = []
+
     print("== CLIENTES ==")
+
     for i, nome_cliente in enumerate(lista1):
         print(f"{i+1}. {nome_cliente.nome}\n")
         nomes_clientes.append(nome_cliente.nome)
 
-    escolha = input("Digite o nome do cliente que deseja agendar um serviço: \n")
-    print("== SERVIÇOS ==")
-    if escolha.title() in nomes_clientes:
+    cliente_agendamento = input("Digite o nome do cliente que deseja agendar um serviço: \n")
+
+    if cliente_agendamento.title() in nomes_clientes:
+
+        print("== SERVIÇOS ==")
+
         for i, nome_servico in enumerate(lista2):
             print(f"{i+1}. {nome_servico.nome}\n")
-            escolha = input(f"Digite o nome do serviço que deseja agendar para {escolha.title}: \n")
+            nomes_servicos.append(nome_servico.nome)
+        
+        servico_agendamento = input(f"Digite o nome do serviço que deseja agendar: \n")
+
+        if servico_agendamento.title() in nomes_servicos:
+            data_agendamento = input("Digite a dapa para o serviço (dd/mm/aaaa): \n")
+            horario_agendamento = input("Digite o horário do agendamento (hh:mm): \n")
+
+            print("Agendamento finalizado!")
+            print(f"""
+    == Agendamento ==
+Cliente: {cliente_agendamento.title}
+Serviço: {servico_agendamento.title}
+Data: {data_agendamento}
+Horário: {horario_agendamento}
+""")
+
+        else:
+            print("Serviço não encontrado, digite novamente.")
             
     else:
         print("Cliente não cadastrado no sistema, cadastre o cliente primeiro.")
+
+def remover_agendamento(lista):
+    op = int(input("Digite a posição do agendamento que deseja remover: "))
+    agendamento_selecionado = lista[op-1]
+    print("Deseja mesmo remover o agendamento abaixo?")
+    agendamento_selecionado.exibir_agendamento()
+    escolha = int(input("1. Sim\n2. Não\nDigite o número da sua escolha: "))
+    if escolha == 1:
+        lista.pop(op-1)
+        print("Agendamento cancelado com sucesso.")
+    elif escolha == 2:
+        print("Agendamento NÃO cancelado.")
