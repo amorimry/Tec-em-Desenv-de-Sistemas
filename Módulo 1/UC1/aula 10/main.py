@@ -67,6 +67,7 @@ while True:
             dados_servico["valor"],
             dados_servico["duração"]
         )
+        
         lista_servicos.append(novo_servico)
 
         print("Serviço cadastrado com sucesso!")

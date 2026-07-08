@@ -41,5 +41,5 @@ class Agendamento():
 Cliente: {self.cliente}
 Serviço: {self.servico}
 Data: {self.data}
-Horário: {self.horario}
+Horário: {self.horario}H
 """)

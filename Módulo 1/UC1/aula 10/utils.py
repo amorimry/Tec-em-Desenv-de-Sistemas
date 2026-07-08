@@ -48,8 +48,8 @@ def agendar_atendimento(lista1, lista2, lista3):
 
     print("== CLIENTES ==")
 
-    for i, nome_cliente in enumerate(lista1):
-        print(f"{i+1}. {nome_cliente.nome}\n")
+    for nome_cliente in lista1:
+        print(f"- {nome_cliente.nome}\n")
         nomes_clientes.append(nome_cliente.nome)
 
     cliente_agendamento = input("Digite o nome do cliente que deseja agendar um serviço: \n")
@@ -58,8 +58,8 @@ def agendar_atendimento(lista1, lista2, lista3):
 
         print("== SERVIÇOS ==")
 
-        for i, nome_servico in enumerate(lista2):
-            print(f"{i+1}. {nome_servico.nome}\n")
+        for nome_servico in lista2:
+            print(f"- {nome_servico.nome}\n")
             nomes_servicos.append(nome_servico.nome)
         
         servico_agendamento = input(f"Digite o nome do serviço que deseja agendar: \n")
@@ -69,7 +69,7 @@ def agendar_atendimento(lista1, lista2, lista3):
             horario_agendamento = input("Digite o horário do agendamento (hh:mm): \n")
             for dh in lista3:
                 if dh.data == data_agendamento and dh.horario == horario_agendamento:
-                    print("Já existe agendamento para esse horário.")
+                    print("Já existe agendamento para essa data e horário.")
                     return
 
             print("Agendamento finalizado!")
