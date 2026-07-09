@@ -1,27 +1,9 @@
 from classes import Cliente, Servico, Agendamento
 import utils
+import storage
 
-lista_clientes = [
-    Cliente("Ana Silva", "85952478563", "23562485692", "ana.silva@email.com"),
-    Cliente("Bruno Souza", "85963247561", "03641251478", "bruno.souza@email.com"),
-    Cliente("Carla Oliveira", "85965234475", "09547852315", "carla.oliveira@email.com"),
-    Cliente("Diego Santos", "85965554782", "56474123058", "diego.santos@email.com"),
-    Cliente("Elena Costa", "85963225541", "65874123584", "elena.costa@email.com")
-]
-lista_servicos = [
-    Servico("Corte Feminino", 80.0, "45"),
-    Servico("Escova", 50.0, "30"),
-    Servico("Manicure", 35.0, "40"),
-    Servico("Pedicure", 40.0, "45"),
-    Servico("Hidratação", 120.0, "60")
-]
-lista_agendamentos = [
-    Agendamento(lista_clientes[2], lista_servicos[0], "10/07/2026", "10:00"),
-    Agendamento(lista_clientes[0], lista_servicos[4], "10/07/2026", "09:00"),
-    Agendamento(lista_clientes[4], lista_servicos[2], "11/07/2026", "14:00"),
-    Agendamento(lista_clientes[1], lista_servicos[1], "11/07/2026", "15:00"),
-    Agendamento(lista_clientes[3], lista_servicos[3], "12/07/2026", "11:30")
-]
+lista_clientes, lista_servicos, lista_agendamentos = storage.load_data()
+
 
 print(f"""
 {"="*10} Bem vindo ao Sistema Beauty Manager {"="*10}
@@ -54,11 +36,13 @@ while True:
         )
 
         lista_clientes.append(novo_cliente)
+        storage.save_data(lista_clientes, lista_servicos, lista_agendamentos)
 
         print("""
     -- Cliente cadastrado com sucesso!
 """)
         input("Digite Enter...")
+
   
     elif op == "2":
         print(f"""
@@ -73,6 +57,7 @@ while True:
         )
         
         lista_servicos.append(novo_servico)
+        storage.save_data(lista_clientes, lista_servicos, lista_agendamentos)
 
         print("""
     -- Serviço cadastrado com sucesso!
@@ -95,6 +80,7 @@ while True:
             )
 
             lista_agendamentos.append(novo_agendamento)
+            storage.save_data(lista_clientes, lista_servicos, lista_agendamentos)
 
         input("Digite Enter...")
 
@@ -112,6 +98,7 @@ while True:
 """)
         utils.exibir_agendamentos(lista_agendamentos)
         utils.remover_agendamento(lista_agendamentos)
+        storage.save_data(lista_clientes, lista_servicos, lista_agendamentos)
 
         input("Digite Enter...")
 
@@ -127,6 +114,7 @@ while True:
             lista_clientes[i].cpf = dados_edit["cpf"]
             lista_clientes[i].email = dados_edit["email"]
             print("Cliente atualizado com sucesso!")
+            storage.save_data(lista_clientes, lista_servicos, lista_agendamentos)
 
         input("Digite Enter...")
 

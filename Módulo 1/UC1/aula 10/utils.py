@@ -133,7 +133,7 @@ def agendar_atendimento(lista1, lista2, lista3):
         for i, s in enumerate(lista2):
             if s.nome not in nomes_servicos:
                 nomes_servicos.append(s.nome)
-                print(f"{i+1} {s.nome}\n")
+                print(f"{i+1}. {s.nome}\n")
         
         servico_agendamento = input(f"Digite o número do serviço que deseja agendar: ")
         if servico_agendamento == "":
