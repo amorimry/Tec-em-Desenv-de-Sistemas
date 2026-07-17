@@ -10,13 +10,24 @@
 class Funcionario:
 
     ano_atual = 2026
+    total_de_func = 0
 
     def __init__(self, nome, salario, idade, cargo):
         self.nome = nome
         self.salario = salario
         self.idade = idade
         self.cargo = cargo
+        Funcionario.total_de_func += 1 # contador
 
+    # método de classe
+    @classmethod
+    def contar_func(cls):
+        print(f"Total de funcionários: {cls.total_de_func}")
+
+    # método estático
+    # @staticmethod
+
+    # método de objeto
     def apresentar_func(self):
         print(f"""
 -- DADOS DO FUNCIONÁRIO --
@@ -26,7 +37,8 @@ class Funcionario:
         Idade: {self.idade} anos
         Cargo: {self.cargo}
 """)
-        
+  
+    # método de objeto
     def inserir_atividade(self, atividade):
         print(f"""
 -- ATIVIDADE DO DIA PARA O FUNCIONÁRIO --
@@ -35,21 +47,25 @@ class Funcionario:
         Atividade de hoje: {atividade.upper()}
 """)
         
+    # método de objeto
     def aumentar_salario(self, porcentagem_de_aumento):
         novo_salario = self.salario * (1 + porcentagem_de_aumento / 100) # cálculo para aumentar em 20% o valor do salário atual
         self.salario = novo_salario
-        
-# criado três métodos para a classe Funcionario
+
+    # MÉTODOS ESPECIAIS
+    def __str__ (self):
+        return f"O funcionário {self.nome}, com {self.idade} anos de idade, recebe R$ {self.salario} trabalhando no cargo de {self.cargo}."
 
 # o self é entendido como algo que aponta para a instância atual que está executando o método
 
 # == LOCALIDADE DO MÉTODO ==
 
-# 
+# método de objeto (aquele que acessa os atributos de um objeto e mexe nele)
 
-    # MÉTODOS ESPECIAIS
-    def __str__ (self):
-        return f"O funcionário {self.nome}, com {self.idade} anos de idade, recebe R$ {self.salario} trabalhando no cargo de {self.cargo}."
+# método de classe (aquele que trabalha com informações da própria classe)
+#   não tem acesso aos atribuos de nenhum objeto, mas tem acesso e pode mexer nos atributos de classe
+
+# método estático (uma função simples, não serve de muita coisa no contexto de trabalhar com objeto ou classe)
 
 if __name__ == "__main__":
 
@@ -62,3 +78,4 @@ if __name__ == "__main__":
     func2.apresentar_func() # mudou a informação do salário no objeto em que rodou o método
 
     print(func2)
+    Funcionario.contar_func()
