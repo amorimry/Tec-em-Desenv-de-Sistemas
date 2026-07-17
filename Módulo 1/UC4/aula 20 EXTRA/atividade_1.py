@@ -4,13 +4,14 @@ class Aluno():
 
     def __init__(self, nome):
         self.nome = nome
-        self.qtd_alunos += 1
 
 aluno1 = Aluno("Paulo")
+Aluno.qtd_alunos += 1
 aluno2 = Aluno("Gabs")
+Aluno.qtd_alunos += 1
 
 print(aluno1.nome)
 print(aluno2.nome)
 
-print(Aluno.escola)
-print(Aluno.qtd_alunos)
+print(f"Escola: {Aluno.escola}")
+print(f"Quantidade de alunos cadastrados: {Aluno.qtd_alunos}")
