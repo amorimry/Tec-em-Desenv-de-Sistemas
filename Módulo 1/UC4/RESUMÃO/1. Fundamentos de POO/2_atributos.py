@@ -1,5 +1,4 @@
 # atributos são variáveis internas do objeto que definem seus comportamentos
-
 # características de um objeto
 
 # os atributos são definidos dentro do método construtor __init__
@@ -28,13 +27,13 @@ class Pessoa:
 
 # == LOCALIDADE DO ATRIBUTO ==
 
-# atributos de instância (aqueles que pertencem a um objeto especifico):
+# atributos de instância ou de objeto (aqueles que pertencem a um objeto especifico; define um objeto específico):
     # self.nome
     # self.salario
     # self.idade
     # self.cargo
 
-# atributos de classe (pertence a classe como um todo):
+# atributos de classe ou estático (uma variável que pertence a classe como um todo, influênciando toda a classe):
     # ano_atual
 
     def apresentar_pessoa(self):
@@ -44,6 +43,8 @@ class Pessoa:
         Nome: {self.nome}
         Idade: {self._idade} anos
         CPF: {self.__cpf}
+
+        Ano atual: {self.ano_atual}
 """)
 
 if __name__ == "__main__":
@@ -51,11 +52,17 @@ if __name__ == "__main__":
 # a criação de um objeto é chamado de instanciar uma classe
 
     pessoa1 = Pessoa("Paulo", 21, "02145632554")
+    pessoa2 = Pessoa("Maria", 23, "02354785231")
 
     pessoa1.apresentar_pessoa()
+    pessoa2.apresentar_pessoa()
 
-    pessoa1.nome = "Marcos"
+    pessoa1.nome = "Marcos" # para alterar o atributo de objeto, você chama o objeto e o nome do atributo
     pessoa1._idade = 22
     pessoa1.cpf = "11111111111111"
 
+    Pessoa.ano_atual = 222222 # para alterar o atributo de classe, você chama a classe e o nome do atributo
+    pessoa2.ano_atual = 3333333 # muda só para um objeto, vira um atributo fantasma
+
     pessoa1.apresentar_pessoa()
+    pessoa2.apresentar_pessoa()

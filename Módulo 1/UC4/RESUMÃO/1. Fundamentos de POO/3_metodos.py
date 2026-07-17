@@ -1,4 +1,5 @@
 # é uma função, mas dentro de uma classe essa função passa a se chamar método
+# ação que o objeto pode executar
 
 # def __init__ é um método construtor (cria o objeto), que serve para configurar a variavel e me devolver um elemento do tipo Funcionario
 
@@ -41,6 +42,10 @@ class Funcionario:
 # criado três métodos para a classe Funcionario
 
 # o self é entendido como algo que aponta para a instância atual que está executando o método
+
+# == LOCALIDADE DO MÉTODO ==
+
+# 
 
     # MÉTODOS ESPECIAIS
     def __str__ (self):
