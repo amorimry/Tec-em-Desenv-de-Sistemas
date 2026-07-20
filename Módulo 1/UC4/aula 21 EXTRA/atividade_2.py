@@ -26,5 +26,9 @@ class Quadrado():
                 {self.lado1}
 """)
         
+    def calcular_area(self):
+        area = self.lado1 * 2
+        print(f"Área do quadrado: {area}")
+        
 teste1 = Quadrado(5)
 teste1.retornar_valor()
