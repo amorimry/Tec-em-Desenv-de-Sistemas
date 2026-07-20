@@ -1,16 +1,16 @@
-class Aluno():
-    escola = "Senac Centro"
-    qtd_alunos = 0
+class Bola():
+    def __init__(self, cor, circunferencia, material):
+        self.cor = cor
+        self.circunferencia = circunferencia
+        self.material = material
 
-    def __init__(self, nome):
-        self.nome = nome
-        Aluno.qtd_alunos += 1
+    def trocar_cor(self):
+        print(f"Cor atual: {self.cor}")
+        nova_cor = input("Digite a nova cor: ")
+        self.cor = nova_cor
+        print("Cor atualizada!")
 
-aluno1 = Aluno("Paulo")
-aluno2 = Aluno("Gabs")
-
-print(aluno1.nome)
-print(aluno2.nome)
-
-print(f"Escola: {Aluno.escola}")
-print(f"Quantidade de alunos cadastrados: {Aluno.qtd_alunos}")
+    def mostrar_cor(self):
+        return f"Cor atual da bola: {self.cor}"
+    
+bola1 = Bola("Azul", 10, "Couro")
