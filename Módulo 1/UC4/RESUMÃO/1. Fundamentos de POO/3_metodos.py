@@ -12,20 +12,32 @@ class Funcionario:
     ano_atual = 2026
     total_de_func = 0
 
-    def __init__(self, nome, salario, idade, cargo):
+    def __init__(self, nome, salario, idade, cargo, email):
         self.nome = nome
         self.salario = salario
         self.idade = idade
         self.cargo = cargo
+        self.email = email
         Funcionario.total_de_func += 1 # contador
 
     # método de classe
+    # este método é ligado à classe em si
+    # por não envolver o objeto, não recebe self como parâmetro, ele recebe o cls (que seria referente a classe), o qual aponta para a classe
+    # é necessário usar o decorador @classmethod
+    # quando usar: criar construtores alternativos ou modificar um estado que pertence a todas as instâncias (objetos que foram criados) da classe ao mesmo tempo
     @classmethod
     def contar_func(cls):
         print(f"Total de funcionários: {cls.total_de_func}")
 
     # método estático
-    # @staticmethod
+    # este método não está ligado nem a classe e nem ao objeto instanciado, ele é apenas uma função
+    # não recebe nem self nem cls, ou seja, não sabe nada sobre os dados da classe ou do objeto
+    # usa o decorador @staticmethod
+    # quando usar: quando tiver uma função utilitária pura e ela precisar entrar dentro da classe, por organização teoricamente; normalmente é bom para validar dados
+    @staticmethod
+    def validar_email_corporativo(email):
+        return email.endswith("@empresa.com") # verifica se o e-mail termina com o domínio da empresa
+        # esse .endswith() faz a checagem e devolve automaticamente True ou False
 
     # método de objeto
     def apresentar_func(self):
@@ -69,8 +81,8 @@ class Funcionario:
 
 if __name__ == "__main__":
 
-    func1 = Funcionario("Paulo", 1500, 21, "Auxiliar Administrativo")
-    func2 = Funcionario("Liz", 1800, 24, "Marketing")
+    func1 = Funcionario("Paulo", 1500, 21, "Auxiliar Administrativo", "paulo.adm@empresa.com")
+    func2 = Funcionario("Liz", 1800, 24, "Marketing", "liz.liz@gmail.com")
 
     func1.inserir_atividade("organizar planilhas.")
     func2.apresentar_func() # chamando o método para rodar
@@ -79,3 +91,5 @@ if __name__ == "__main__":
 
     print(func2)
     Funcionario.contar_func()
+
+    print(f"Email válido? {Funcionario.validar_email_corporativo(func2.email)}")
