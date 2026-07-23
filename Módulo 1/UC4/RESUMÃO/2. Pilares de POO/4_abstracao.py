@@ -40,3 +40,21 @@ pagamento2.processar_pagamento(150.00)
 
 # A abstração (usando a biblioteca abc) serve exatamente para criar um "contrato" ou um molde obrigatório para as outras classes.
 # Quando você usa o módulo abc (Abstract Base Classes) e o decorador @abstractmethod, você está dizendo para o Python: "Qualquer classe que tentar ser filha desta classe base DEVE ter esse método preenchido, senão eu nem deixo o programa rodar".
+
+# super classe
+class Funcionario(ABC):
+    def __init__(self, nome, salario):
+        self.nome = nome
+        self.salario = salario
+
+    @abstractmethod
+    def calcular_salario(self):
+        pass
+
+class Vendedor(Funcionario):
+    def __init__(self, nome, salario, comissao):
+        super().__init__(nome, salario)
+        self.comissao = comissao
+
+    def calcular_salario(self):
+        return super().calcular_salario()
