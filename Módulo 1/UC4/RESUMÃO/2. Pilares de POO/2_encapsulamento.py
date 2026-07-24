@@ -27,6 +27,8 @@ class Pessoa:
 if __name__ == "__main__":
 
     pessoa1 = Pessoa("Paulo", 21, "02145632554")
+    print(pessoa1._idade)
+    # print(pessoa1.__cpf) ERRO!
     pessoa1.apresentar_pessoa()
 
     pessoa1.nome = "Felipe"
