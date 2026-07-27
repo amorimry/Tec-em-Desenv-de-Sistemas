@@ -18,30 +18,30 @@ animais_lista = [
 ]
 encontros_lista = []
 
-# print("Cadastrar Tutor")
-# nome = input("Digite o nome do tutor: ")
-# idade = int(input("Digite a idade do tutor: "))
+print("Cadastrar Tutor")
+nome = input("Digite o nome do tutor: ")
+idade = int(input("Digite a idade do tutor: "))
 
-# novo_tutor = classe.Tutor(nome, idade)
-# tutores_lista.append(novo_tutor)
+novo_tutor = classe.Tutor(nome, idade)
+tutores_lista.append(novo_tutor)
 
-# print(tutores_lista)
+print(tutores_lista)
 
-# print("Cadastrar Animal")
-# escolha = print(f"""Qual animal deseja cadastrar?
-# 1. Cachorro
-# 2. Gato
-# 3. Coelho
-# """)
-# match escolha:
-#     case "1":
-#         pass
-#     case "2":
-#         pass
-#     case "3":
-#         pass
-#     case _:
-#         print("Opção inválida.")
+print("Cadastrar Animal")
+escolha = print(f"""Qual animal deseja cadastrar?
+1. Cachorro
+2. Gato
+3. Coelho
+""")
+match escolha:
+    case "1":
+        pass
+    case "2":
+        pass
+    case "3":
+        pass
+    case _:
+        print("Opção inválida.")
 
 print("Inscrever animais em encontros")
 mostrar_animais(animais_lista)
