@@ -68,6 +68,9 @@ class Funcionario:
     def __str__ (self):
         return f"O funcionário {self.nome}, com {self.idade} anos de idade, recebe R$ {self.salario} trabalhando no cargo de {self.cargo}."
 
+    def __repr__(self):
+        return f""
+
 # o self é entendido como algo que aponta para a instância atual que está executando o método
 
 # == LOCALIDADE DO MÉTODO ==
