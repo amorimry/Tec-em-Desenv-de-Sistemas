@@ -1,3 +1,0 @@
-# 9. Gestão de senhas de banco
-# Um banco emite senhas numéricas sequenciais. Simule uma fila com 10 senhas: fila = [101, 102, 103, 104, 105, 106, 107, 108, 109, 110]. A cada iteração de um while, remova a primeira senha da fila com .pop(0), exiba "Chamando senha: XXX" e encerre quando a fila estiver vazia. Ao final, informe quantas senhas foram atendidas.
-
