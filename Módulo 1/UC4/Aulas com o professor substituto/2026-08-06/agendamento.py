@@ -1,34 +1,3 @@
-class Pessoa:
-    def __init__(self, nome, telefone):
-        self.nome = nome
-        self.telefone = telefone
-
-class Cliente(Pessoa):
-    def __init__(self, nome, telefone):
-        super().__init__(nome, telefone)
-
-    def apresentar(self):
-        return (f"Cliente: {self.nome} | Telefone: {self.telefone}")
-
-    def total_gasto(self, lista):
-        total = 0
-        for v in lista:
-            total += v.preco
-        return (f"R$ {total:,.2f}")
-
-class Profissional(Pessoa):
-    def __init__(self, nome, telefone):
-        super().__init__(nome, telefone)
-
-    def apresentar(self):
-        print(f"Profissional: {self.nome} | Telefone: {self.telefone}")
-
-    def agenda_do_dia(self, data):
-        return [ag.resumo() for ag in self.agendamentos
-                if ag.data_hora.startswith(data)]
-
-# ------------------------------------------------------------
-
 class Agendamento:
     agendamentos = []
 
@@ -58,6 +27,37 @@ class Servico:
             self.__preco = novo
         else:
             print("Preço inválido.")
+
+# ------------------------------------------------------------
+
+class Pessoa:
+    def __init__(self, nome, telefone):
+        self.nome = nome
+        self.telefone = telefone
+
+class Cliente(Pessoa):
+    def __init__(self, nome, telefone):
+        super().__init__(nome, telefone)
+
+    def apresentar(self):
+        return (f"Cliente: {self.nome} | Telefone: {self.telefone}")
+
+    def total_gasto(self, lista):
+        total = 0
+        for v in lista:
+            total += v.preco
+        return (f"R$ {total:,.2f}")
+
+class Profissional(Pessoa):
+    def __init__(self, nome, telefone):
+        super().__init__(nome, telefone)
+
+    def apresentar(self):
+        print(f"Profissional: {self.nome} | Telefone: {self.telefone}")
+
+    def agenda_do_dia(self, data):
+        return [ag.resumo() for ag in self.agendamentos
+                if ag.data_hora.startswith(data)]
 
 
 if __name__ == "__main__":
