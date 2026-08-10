@@ -19,5 +19,3 @@ def cadastrar_novo_galpao():
         return
     
     novo_galpao = Galpao(codigo, nome, endereco)
-
-    galpoes

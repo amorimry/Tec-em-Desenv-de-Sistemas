@@ -21,4 +21,3 @@ lista de funcionalidades:
 	- cronometrar tempo de estudos;
 	- colocar todos os seus materiais em um local só e disso puxar as informações que forem precisas (tipo o NotebookLM);
 	- utilizar cores, botões e tudo que for funcionalidade de uma forma pensada para que torne um ambiente seguro, tranquilo, e transmita uma interação boa com quem irá usar
-
