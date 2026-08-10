@@ -1,0 +1,774 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Beauty Manager</title>
+  <style>
+    :root{
+      --bg:#0b1220;
+      --card:#111a2e;
+      --muted:#9fb0d0;
+      --text:#e8eefc;
+      --primary:#4f8cff;
+      --danger:#ff5b6e;
+      --ok:#2dd4bf;
+      --border:rgba(255,255,255,.12);
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Cantarell,Noto Sans,sans-serif;
+      background:linear-gradient(180deg, var(--bg), #050912);
+      color:var(--text);
+    }
+    header{
+      padding:28px 16px 12px;
+      max-width:1100px;
+      margin:0 auto;
+    }
+    h1{margin:0; font-size:28px; letter-spacing:.2px}
+    p{margin:8px 0 0; color:var(--muted)}
+
+    .wrap{max-width:1100px; margin:0 auto; padding:16px}
+    .grid{display:grid; grid-template-columns: 1.1fr .9fr; gap:14px}
+    @media (max-width: 900px){.grid{grid-template-columns:1fr}}
+
+    .card{
+      background:rgba(17,26,46,.75);
+      border:1px solid var(--border);
+      border-radius:14px;
+      padding:14px;
+      box-shadow:0 10px 30px rgba(0,0,0,.25);
+      backdrop-filter: blur(6px);
+    }
+
+    .tabs{display:flex; flex-wrap:wrap; gap:10px}
+    button.tab{
+      border:1px solid var(--border);
+      background:transparent;
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      transition:.15s;
+      font-weight:600;
+    }
+    button.tab:hover{border-color:rgba(79,140,255,.6)}
+    button.tab.active{
+      background:rgba(79,140,255,.18);
+      border-color:rgba(79,140,255,.75);
+    }
+
+    form{display:grid; gap:10px; margin-top:12px}
+    label{font-size:13px; color:var(--muted)}
+    input, select{
+      width:100%;
+      padding:10px 12px;
+      border-radius:10px;
+      border:1px solid var(--border);
+      background:rgba(0,0,0,.2);
+      color:var(--text);
+      outline:none;
+    }
+    input:focus, select:focus{border-color:rgba(79,140,255,.75)}
+
+    .row2{display:grid; grid-template-columns: 1fr 1fr; gap:10px}
+    @media (max-width: 560px){.row2{grid-template-columns:1fr}}
+
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px}
+    .btn{
+      border:1px solid var(--border);
+      background:rgba(255,255,255,.04);
+      color:var(--text);
+      padding:10px 12px;
+      border-radius:10px;
+      cursor:pointer;
+      font-weight:700;
+      transition:.15s;
+    }
+    .btn.primary{background:rgba(79,140,255,.2); border-color:rgba(79,140,255,.6)}
+    .btn.danger{background:rgba(255,91,110,.15); border-color:rgba(255,91,110,.6)}
+    .btn.ok{background:rgba(45,212,191,.15); border-color:rgba(45,212,191,.6)}
+
+    .list{margin-top:12px}
+    .empty{color:var(--muted); font-style:italic}
+
+    .item{
+      padding:10px 12px;
+      border:1px solid var(--border);
+      border-radius:12px;
+      margin-top:10px;
+      background:rgba(0,0,0,.18);
+    }
+    .item strong{display:block; margin-bottom:6px}
+    .meta{color:var(--muted); font-size:13px; line-height:1.35}
+
+    .toast{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:18px;
+      background:rgba(17,26,46,.92);
+      border:1px solid var(--border);
+      padding:10px 12px;
+      border-radius:12px;
+      color:var(--text);
+      display:none;
+      max-width:calc(100vw - 24px);
+      z-index:50;
+    }
+    .toast.show{display:block;}
+    .toast .kind{font-weight:800; margin-right:8px}
+    .toast.ok .kind{color:var(--ok)}
+    .toast.err .kind{color:var(--danger)}
+
+    footer{max-width:1100px; margin:0 auto; padding:0 16px 28px; color:var(--muted); font-size:12px}
+    .hr{height:1px; background:var(--border); margin:10px 0}
+    .small{font-size:12px; color:var(--muted)}
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Beauty Manager</h1>
+    <p>Sistema para <b>clientes</b>, <b>serviços</b> e <b>agendamentos</b>.</p>
+  </header>
+
+  <div class="wrap">
+    <div class="card">
+      <div class="tabs" role="tablist" aria-label="Seções do sistema">
+        <button class="tab active" data-tab="tab-cadastro">Cadastrar</button>
+        <button class="tab" data-tab="tab-agendar">Agendar</button>
+        <button class="tab" data-tab="tab-listar">Listar</button>
+        <button class="tab" data-tab="tab-cancelar">Cancelar</button>
+        <button class="tab" data-tab="tab-editar">Editar cliente</button>
+        <button class="tab" data-tab="tab-util">Utilidades</button>
+      </div>
+
+      <div id="tab-cadastro" class="tabpanel" style="display:block">
+        <div class="grid" style="margin-top:12px;">
+          <div>
+            <h2 style="margin:0 0 6px; font-size:18px;">Cadastrar Cliente</h2>
+            <form id="formCliente" autocomplete="off">
+              <div class="row2">
+                <div>
+                  <label for="cliNome">Nome</label>
+                  <input id="cliNome" type="text" />
+                </div>
+                <div>
+                  <label for="cliTelefone">Telefone (11 dígitos)</label>
+                  <input id="cliTelefone" type="text" inputmode="numeric"/>
+                </div>
+              </div>
+              <div class="row2">
+                <div>
+                  <label for="cliCpf">CPF (11 dígitos)</label>
+                  <input id="cliCpf" type="text" inputmode="numeric"/>
+                </div>
+                <div>
+                  <label for="cliEmail">E-mail</label>
+                  <input id="cliEmail" type="email"/>
+                </div>
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="submit">Salvar cliente</button>
+              </div>
+              <div class="small">Valida CPF duplicado no sistema.</div>
+            </form>
+          </div>
+
+          <div>
+            <h2 style="margin:0 0 6px; font-size:18px;">Cadastrar Serviço</h2>
+            <form id="formServico" autocomplete="off">
+              <div class="row2">
+                <div>
+                  <label for="srvNome">Nome do serviço</label>
+                  <input id="srvNome" type="text" placeholder="Ex: Corte Feminino" required />
+                </div>
+                <div>
+                  <label for="srvValor">Valor</label>
+                  <input id="srvValor" type="number" step="0.01" min="0" placeholder="Ex: 80.00" required />
+                </div>
+              </div>
+              <div>
+                <label for="srvDuracao">Duração (minutos)</label>
+                <input id="srvDuracao" type="number" min="1" placeholder="Ex: 45" required />
+              </div>
+              <div class="actions">
+                <button class="btn primary" type="submit">Salvar serviço</button>
+              </div>
+              <div class="small">Duração e valor precisam ser maiores que 0.</div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-agendar" class="tabpanel" style="display:none">
+        <h2 style="margin:0 0 6px; font-size:18px;">Agendar Atendimento</h2>
+        <form id="formAgendar" autocomplete="off">
+          <div class="row2">
+            <div>
+              <label for="agCli">Cliente</label>
+              <select id="agCli" required></select>
+            </div>
+            <div>
+              <label for="agSrv">Serviço</label>
+              <select id="agSrv" required></select>
+            </div>
+          </div>
+          <div class="row2">
+            <div>
+              <label for="agData">Data (dd/mm/aaaa)</label>
+              <input id="agData" type="text" placeholder="10/07/2026" required />
+            </div>
+            <div>
+              <label for="agHora">Horário (hh:mm)</label>
+              <input id="agHora" type="time" required />
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn ok" type="submit">Agendar</button>
+          </div>
+          <div class="small">Evita agendamento duplicado para mesma data e horário.</div>
+        </form>
+      </div>
+
+      <div id="tab-listar" class="tabpanel" style="display:none">
+        <h2 style="margin:0 0 6px; font-size:18px;">Lista de Agendamentos</h2>
+        <div class="list" id="listaAgendamentos"></div>
+      </div>
+
+      <div id="tab-cancelar" class="tabpanel" style="display:none">
+        <h2 style="margin:0 0 6px; font-size:18px;">Cancelar Agendamento</h2>
+        <div class="small">Selecione um agendamento para remover.</div>
+        <div class="hr"></div>
+        <div class="row2">
+          <div>
+            <label for="canSel">Agendamento</label>
+            <select id="canSel" required></select>
+          </div>
+          <div style="align-self:end;">
+            <button class="btn danger" id="btnCancelar" type="button">Cancelar selecionado</button>
+          </div>
+        </div>
+      </div>
+
+      <div id="tab-editar" class="tabpanel" style="display:none">
+        <h2 style="margin:0 0 6px; font-size:18px;">Editar Cliente</h2>
+        <form id="formEditar" autocomplete="off">
+          <div class="row2">
+            <div>
+              <label for="edtSel">Cliente</label>
+              <select id="edtSel" required></select>
+            </div>
+            <div>
+              <label class="small" style="display:block; margin-bottom:6px;">Atualização</label>
+              <div class="small">Deixe em branco para manter o valor atual.</div>
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="edtNome">Nome</label>
+              <input id="edtNome" type="text" placeholder="(mantém se vazio)" />
+            </div>
+            <div>
+              <label for="edtTelefone">Telefone</label>
+              <input id="edtTelefone" type="text" inputmode="numeric" placeholder="(mantém se vazio)" />
+            </div>
+          </div>
+
+          <div class="row2">
+            <div>
+              <label for="edtCpf">CPF</label>
+              <input id="edtCpf" type="text" inputmode="numeric" placeholder="(mantém se vazio)" />
+            </div>
+            <div>
+              <label for="edtEmail">E-mail</label>
+              <input id="edtEmail" type="email" placeholder="(mantém se vazio)" />
+            </div>
+          </div>
+
+          <div class="actions">
+            <button class="btn primary" type="submit">Salvar alterações</button>
+          </div>
+        </form>
+      </div>
+
+      <div id="tab-util" class="tabpanel" style="display:none">
+        <h2 style="margin:0 0 6px; font-size:18px;">Utilidades</h2>
+        <div class="item">
+          <strong>Resetar sistema</strong>
+          <div class="meta">
+            Isso apaga <b>clientes</b>, <b>serviços</b> e <b>agendamentos</b> salvos no seu navegador.
+          </div>
+          <div class="actions" style="margin-top:12px">
+            <button class="btn danger" type="button" id="btnReset">Resetar tudo</button>
+          </div>
+        </div>
+
+        <div class="item">
+          <strong>Importar exemplo</strong>
+          <div class="meta">Carrega dados parecidos com o `storage.json` do Python (para você testar rápido).</div>
+          <div class="actions" style="margin-top:12px">
+            <button class="btn ok" type="button" id="btnSeed">Carregar exemplo</button>
+          </div>
+        </div>
+
+        <div class="item">
+          <strong>Ajuda</strong>
+          <div class="meta">
+            O sistema replica a lógica do console:
+            <ul style="margin:8px 0 0; padding-left:18px; color:var(--muted)">
+              <li>CPF duplicado impede cadastro</li>
+              <li>Valor precisa ser maior que 0</li>
+              <li>Agendamento duplicado (mesma data e horário) é bloqueado</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <footer>
+    Dica: abra este arquivo no navegador (ex: clique duas vezes no arquivo). Os dados ficam em localStorage.
+  </footer>
+
+  <script>
+    const LS_KEY = 'beauty_manager_v1';
+
+    const seedData = {
+      clientes: [
+        { nome: 'Ana Silva', telefone: '85952478563', cpf: '23562485692', email: 'ana.silva@email.com' },
+        { nome: 'Bruno Souza', telefone: '85963247561', cpf: '03641251478', email: 'bruno.souza@email.com' },
+        { nome: 'Carla Oliveira', telefone: '85965234475', cpf: '09547852315', email: 'carla.oliveira@email.com' },
+        { nome: 'Diego Santos', telefone: '85965554782', cpf: '56474123058', email: 'diego.santos@email.com' },
+        { nome: 'Elena Costa', telefone: '85963225541', cpf: '65874123584', email: 'elena.costa@email.com' },
+        { nome: 'Ryan', telefone: '85989526778', cpf: '09724814351', email: 'ry.amorim04@gmail.com' },
+      ],
+      servicos: [
+        { nome: 'Corte Feminino', valor: 80.0, duracao: '45' },
+        { nome: 'Escova', valor: 50.0, duracao: '30' },
+        { nome: 'Manicure', valor: 35.0, duracao: '40' },
+        { nome: 'Pedicure', valor: 40.0, duracao: '45' },
+        { nome: 'Hidratação', valor: 120.0, duracao: '60' },
+      ],
+      agendamentos: [
+        { cliente_cpf: '09547852315', servico_nome: 'Corte Feminino', data: '10/07/2026', horario: '10:00' },
+        { cliente_cpf: '23562485692', servico_nome: 'Hidratação', data: '10/07/2026', horario: '09:00' },
+        { cliente_cpf: '65874123584', servico_nome: 'Manicure', data: '11/07/2026', horario: '14:00' },
+        { cliente_cpf: '03641251478', servico_nome: 'Escova', data: '11/07/2026', horario: '15:00' },
+        { cliente_cpf: '56474123058', servico_nome: 'Pedicure', data: '12/07/2026', horario: '11:30' },
+        { cliente_cpf: '09724814351', servico_nome: 'Hidratação', data: '11/07/2026', horario: '16:00' },
+      ]
+    };
+
+    function loadState(){
+      try{
+        const raw = localStorage.getItem(LS_KEY);
+        if(!raw) return {clientes:[], servicos:[], agendamentos:[]};
+        const parsed = JSON.parse(raw);
+        return {
+          clientes: Array.isArray(parsed.clientes) ? parsed.clientes : [],
+          servicos: Array.isArray(parsed.servicos) ? parsed.servicos : [],
+          agendamentos: Array.isArray(parsed.agendamentos) ? parsed.agendamentos : [],
+        };
+      }catch{
+        return {clientes:[], servicos:[], agendamentos:[]};
+      }
+    }
+
+    function saveState(state){
+      localStorage.setItem(LS_KEY, JSON.stringify(state));
+    }
+
+    function normalizeNome(nome){
+      nome = (nome || '').trim();
+      return nome
+        .split(/\s+/)
+        .filter(Boolean)
+        .map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
+        .join(' ');
+    }
+
+    function showToast(msg, kind='ok'){
+      const toast = document.getElementById('toast');
+      toast.className = `toast show ${kind === 'ok' ? 'ok' : 'err'}`;
+      toast.innerHTML = `<span class="kind">${kind === 'ok' ? 'OK' : 'ERRO'}:</span>${escapeHtml(msg)}`;
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(()=> toast.className='toast', 2600);
+    }
+
+    function escapeHtml(str){
+      return String(str)
+        .replaceAll('&','&amp;')
+        .replaceAll('<','<')
+        .replaceAll('>','>')
+        .replaceAll('"','"')
+        .replaceAll("'",'&#039;');
+    }
+
+    function formatValor(v){
+      const num = Number(v);
+      if(Number.isNaN(num)) return 'R$ 0,00';
+      return 'R$ ' + num.toFixed(2).replace('.',',');
+    }
+
+    function getClienteByCpf(state, cpf){
+      return state.clientes.find(c => c.cpf === cpf) || null;
+    }
+
+    function getServicoByNome(state, nome){
+      return state.servicos.find(s => s.nome === nome) || null;
+    }
+
+    function painelTabs(){
+      document.querySelectorAll('button.tab').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('button.tab').forEach(b => b.classList.remove('active'));
+          btn.classList.add('active');
+
+          const id = btn.getAttribute('data-tab');
+          document.querySelectorAll('.tabpanel').forEach(p => p.style.display = 'none');
+          document.getElementById(id).style.display = 'block';
+
+          if(id === 'tab-listar') renderLista();
+          if(id === 'tab-cancelar') renderCancelar();
+          if(id === 'tab-editar') renderEditarSelecao();
+        });
+      });
+    }
+
+    function renderSelects(state){
+      const agCli = document.getElementById('agCli');
+      const agSrv = document.getElementById('agSrv');
+
+      agCli.innerHTML = '';
+      agSrv.innerHTML = '';
+
+      state.clientes.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.cpf;
+        opt.textContent = c.nome;
+        agCli.appendChild(opt);
+      });
+
+      state.servicos.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.nome;
+        opt.textContent = s.nome;
+        agSrv.appendChild(opt);
+      });
+
+      // cancelar
+      renderCancelar(state);
+      renderEditarSelecao(state);
+    }
+
+    function renderLista(state){
+      const wrap = document.getElementById('listaAgendamentos');
+      wrap.innerHTML = '';
+
+      if(!state.agendamentos.length){
+        wrap.innerHTML = '<div class="empty">Nenhum agendamento cadastrado.</div>';
+        return;
+      }
+
+      state.agendamentos.forEach((a, idx) => {
+        const cliente = getClienteByCpf(state, a.cliente_cpf);
+        const servico = getServicoByNome(state, a.servico_nome);
+
+        const nomeCliente = cliente ? cliente.nome : '(cliente removido)';
+        const nomeServico = servico ? servico.nome : '(serviço removido)';
+        const valor = servico ? formatValor(servico.valor) : '';
+
+        const div = document.createElement('div');
+        div.className = 'item';
+        div.innerHTML = `
+          <strong>${idx+1}. ${escapeHtml(nomeCliente)} | ${escapeHtml(nomeServico)}</strong>
+          <div class="meta">
+            ${escapeHtml(a.data)} | ${escapeHtml(a.horario)}H<br/>
+            ${valor ? `Valor: ${valor}` : ''}
+          </div>
+        `;
+        wrap.appendChild(div);
+      });
+    }
+
+    function renderCancelar(state){
+      state = state || window.__state;
+      const sel = document.getElementById('canSel');
+      if(!sel) return;
+
+      sel.innerHTML = '';
+
+      if(!state.agendamentos.length){
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'Nenhum agendamento';
+        sel.appendChild(opt);
+        document.getElementById('btnCancelar').disabled = true;
+        return;
+      }
+
+      document.getElementById('btnCancelar').disabled = false;
+
+      state.agendamentos.forEach((a, idx) => {
+        const cliente = getClienteByCpf(state, a.cliente_cpf);
+        const servico = getServicoByNome(state, a.servico_nome);
+        const text = `${idx+1}. ${cliente ? cliente.nome : '(cliente removido)'} - ${servico ? servico.nome : '(serviço removido)'} (${a.data} ${a.horario}H)`;
+
+        const opt = document.createElement('option');
+        opt.value = String(idx);
+        opt.textContent = text;
+        sel.appendChild(opt);
+      });
+    }
+
+    function renderEditarSelecao(state){
+      state = state || window.__state;
+      const sel = document.getElementById('edtSel');
+      if(!sel) return;
+
+      sel.innerHTML = '';
+
+      if(!state.clientes.length){
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'Nenhum cliente';
+        sel.appendChild(opt);
+        return;
+      }
+
+      // opções
+      state.clientes.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c.cpf;
+        opt.textContent = c.nome;
+        sel.appendChild(opt);
+      });
+
+      // atualizar campos do primeiro (ou do atual)
+      const currentCpf = sel.value;
+      const chosen = state.clientes.find(c => c.cpf === currentCpf) || state.clientes[0];
+      if(chosen){
+        document.getElementById('edtNome').value = chosen.nome;
+        document.getElementById('edtTelefone').value = chosen.telefone;
+        document.getElementById('edtCpf').value = chosen.cpf;
+        document.getElementById('edtEmail').value = chosen.email;
+      }
+    }
+
+    function bindEvents(){
+      // Cadastrar Cliente
+      document.getElementById('formCliente').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const state = window.__state;
+
+        const nome = normalizeNome(document.getElementById('cliNome').value);
+        const telefone = String(document.getElementById('cliTelefone').value).trim();
+        const cpf = String(document.getElementById('cliCpf').value).trim();
+        const email = document.getElementById('cliEmail').value.trim();
+
+        if(!nome) return showToast('Preencha o campo NOME.', 'err');
+        if(!telefone) return showToast('Preencha o campo TELEFONE.', 'err');
+        if(telefone.length !== 11) return showToast('Digite um telefone válido (11 dígitos).', 'err');
+        if(!cpf) return showToast('Preencha o campo CPF.', 'err');
+        if(cpf.length !== 11) return showToast('Digite um CPF válido (11 dígitos).', 'err');
+        if(state.clientes.some(c => c.cpf === cpf)) return showToast('CPF já cadastrado no sistema.', 'err');
+        if(!email) return showToast('Preencha o campo E-MAIL.', 'err');
+
+        state.clientes.push({ nome, telefone, cpf, email });
+        saveState(state);
+        showToast('Cliente cadastrado com sucesso!', 'ok');
+
+        e.target.reset();
+        window.__state = state;
+        renderSelects(state);
+      });
+
+      // Cadastrar Serviço
+      document.getElementById('formServico').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const state = window.__state;
+
+        const nome = normalizeNome(document.getElementById('srvNome').value);
+        const valorRaw = document.getElementById('srvValor').value;
+        const duracaoRaw = document.getElementById('srvDuracao').value;
+
+        if(!nome) return showToast('Preencha o campo NOME DO SERVIÇO.', 'err');
+        const valor = Number(valorRaw);
+        if(Number.isNaN(valor) || valor <= 0) return showToast('Valor inválido, digite novamente (maior que 0).', 'err');
+
+        const duracao = String(duracaoRaw).trim();
+        const durNum = Number(duracaoRaw);
+        if(!duracao || Number.isNaN(durNum) || durNum <= 0) return showToast('Duração inválida, digite novamente (maior que 0).', 'err');
+
+        state.servicos.push({ nome, valor, duracao });
+        saveState(state);
+        showToast('Serviço cadastrado com sucesso!', 'ok');
+
+        e.target.reset();
+        window.__state = state;
+        renderSelects(state);
+      });
+
+      // Agendar
+      document.getElementById('formAgendar').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const state = window.__state;
+
+        if(!state.clientes.length) return showToast('Cadastre ao menos 1 cliente.', 'err');
+        if(!state.servicos.length) return showToast('Cadastre ao menos 1 serviço.', 'err');
+        if(!state.agendamentos) state.agendamentos = [];
+
+        const clienteCpf = document.getElementById('agCli').value;
+        const servicoNome = document.getElementById('agSrv').value;
+        const data = document.getElementById('agData').value.trim();
+        const horario = document.getElementById('agHora').value; // hh:mm
+
+        if(!data) return showToast('Preencha a data (dd/mm/aaaa).', 'err');
+        if(!horario) return showToast('Preencha o horário (hh:mm).', 'err');
+
+        const dup = state.agendamentos.some(a => a.data === data && a.horario === horario);
+        if(dup) return showToast('Já existe agendamento para essa data e horário.', 'err');
+
+        state.agendamentos.push({ cliente_cpf: clienteCpf, servico_nome: servicoNome, data, horario });
+        saveState(state);
+        showToast('Agendamento finalizado!', 'ok');
+
+        e.target.reset();
+        window.__state = state;
+        renderCancelar(state);
+        renderLista(state);
+      });
+
+      // Cancelar
+      document.getElementById('btnCancelar').addEventListener('click', () => {
+        const state = window.__state;
+        const idx = Number(document.getElementById('canSel').value);
+        if(Number.isNaN(idx) || idx < 0 || idx >= state.agendamentos.length) {
+          return showToast('Selecione um agendamento válido.', 'err');
+        }
+        const ag = state.agendamentos[idx];
+        const cliente = getClienteByCpf(state, ag.cliente_cpf);
+        const servico = getServicoByNome(state, ag.servico_nome);
+
+        const ok = confirm(`Deseja remover:\n${cliente ? cliente.nome : '(cliente removido)'} - ${servico ? servico.nome : '(serviço removido)'}\n${ag.data} ${ag.horario}H`);
+        if(!ok) return;
+
+        state.agendamentos.splice(idx, 1);
+        saveState(state);
+        showToast('Agendamento cancelado com sucesso.', 'ok');
+        renderCancelar(state);
+        renderLista(state);
+      });
+
+      // Editar
+      const sel = document.getElementById('edtSel');
+      sel.addEventListener('change', () => {
+        const state = window.__state;
+        const cpf = sel.value;
+        const c = state.clientes.find(x => x.cpf === cpf);
+        if(!c) return;
+        document.getElementById('edtNome').value = c.nome;
+        document.getElementById('edtTelefone').value = c.telefone;
+        document.getElementById('edtCpf').value = c.cpf;
+        document.getElementById('edtEmail').value = c.email;
+      });
+
+      document.getElementById('formEditar').addEventListener('submit', (e) => {
+        e.preventDefault();
+        const state = window.__state;
+
+        if(!state.clientes.length) return showToast('Não há clientes cadastrados.', 'err');
+
+        const cpfSelecionado = sel.value;
+        const cliente = state.clientes.find(c => c.cpf === cpfSelecionado);
+        if(!cliente) return showToast('Cliente inválido.', 'err');
+
+        let nome = document.getElementById('edtNome').value.trim();
+        let telefone = document.getElementById('edtTelefone').value.trim();
+        let cpfNovo = document.getElementById('edtCpf').value.trim();
+        let email = document.getElementById('edtEmail').value.trim();
+
+        // Enter vazio = mantém
+        if(nome === '') nome = cliente.nome;
+        if(telefone === '') telefone = cliente.telefone;
+        if(cpfNovo === '') cpfNovo = cliente.cpf;
+        if(email === '') email = cliente.email;
+
+        nome = normalizeNome(nome);
+        if(!nome) return showToast('Preencha o campo NOME.', 'err');
+
+        if(!telefone || telefone.length !== 11) return showToast('Telefone deve ter 11 dígitos.', 'err');
+
+        if(!cpfNovo || cpfNovo.length !== 11) return showToast('CPF deve ter 11 dígitos.', 'err');
+        const cpfDuplicado = state.clientes.some(c => c.cpf === cpfNovo && c.cpf !== cliente.cpf);
+        if(cpfDuplicado) return showToast('CPF já cadastrado no sistema.', 'err');
+
+        if(!email) return showToast('Preencha o campo E-MAIL.', 'err');
+
+        // atualiza objeto
+        cliente.nome = nome;
+        cliente.telefone = telefone;
+        cliente.cpf = cpfNovo;
+        cliente.email = email;
+
+        // se CPF mudou, precisamos atualizar agendamentos que referenciam cliente_cpf
+        state.agendamentos.forEach(a => {
+          if(a.cliente_cpf === cpfSelecionado) a.cliente_cpf = cpfNovo;
+        });
+
+        saveState(state);
+        showToast('Cliente atualizado com sucesso!', 'ok');
+
+        window.__state = state;
+        renderSelects(state);
+        renderCancelar(state);
+        renderLista(state);
+      });
+
+      // Reset/Seed
+      document.getElementById('btnReset').addEventListener('click', () => {
+        const ok = confirm('Resetar tudo? Isso apagará clientes, serviços e agendamentos do seu navegador.');
+        if(!ok) return;
+        localStorage.removeItem(LS_KEY);
+        window.__state = loadState();
+        renderAll();
+        showToast('Sistema resetado.', 'ok');
+      });
+
+      document.getElementById('btnSeed').addEventListener('click', () => {
+        const ok = confirm('Carregar exemplo? Isso substituirá os dados atuais do navegador.');
+        if(!ok) return;
+        const state = JSON.parse(JSON.stringify(seedData));
+        saveState(state);
+        window.__state = state;
+        renderAll();
+        showToast('Exemplo carregado.', 'ok');
+      });
+    }
+
+    function renderAll(){
+      const state = window.__state;
+      renderSelects(state);
+      renderLista(state);
+      renderEditarSelecao(state);
+      renderCancelar(state);
+    }
+
+    (function init(){
+      painelTabs();
+      window.__state = loadState();
+      bindEvents();
+      renderAll();
+
+      // defaults: set placeholders for time input? (no-op)
+    })();
+  </script>
+</body>
+</html>
+

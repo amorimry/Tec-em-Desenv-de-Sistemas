@@ -1,0 +1,2 @@
+# 4. Crie um programa que pede o nome dos funcionários de um departamente até que seja fornecido um funcionário com o nome "SAIR". Exiba quantos funcionários foram cadastrados.
+
