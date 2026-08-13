@@ -18,8 +18,8 @@ app.title("Cadastro de Clientes")
 app.geometry("500x400")
 app._set_appearance_mode('system')
 
-app.grid_columnconfigure(0,weight=0)
-app.grid_columnconfigure(1,weight=1)
+# app.grid_columnconfigure(0,weight=0)
+# app.grid_columnconfigure(1,weight=1)
 
 # TÍTULO
 
