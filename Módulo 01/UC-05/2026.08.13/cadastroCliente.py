@@ -19,6 +19,9 @@ app.geometry("500x400")
 app._set_appearance_mode("system")
 # temas: light, dark, system
 
+app.grid_columnconfigure(0,weight=0) # coluna 0 não cresce
+app.grid_columnconfigure(1,weight=1) # coluna 1 cresce ocupando expaço extra
+
 titulo = ctk.CTkLabel(
     app,
     text="Cadastro de Clientes",
@@ -32,6 +35,10 @@ titulo.grid(
     pady=20,
     columnspan=3
 )
+
+# FRAME - DADOS PESSOAIS
+dados_frame = ctk.CTkFrame(app, fg_color="#b1bbc8")
+dados_frame.grid(row=1, column=0, columnspan=2, stick="ew", padx=20)
 
 nome = ctk.CTkLabel(
     app,
