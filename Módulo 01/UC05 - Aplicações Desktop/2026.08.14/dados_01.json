@@ -1,0 +1,8 @@
+{
+    "nome": "Ana",
+    "idade": 28,
+    "estudante": true,
+    "cidade": null,
+    "hobbies": ["ler", "escrever", "estudar", "programar"],
+    "endereco": {"rua": "Av. Beira Mar", "cidade": "Fortaleza", "estado": "Ceará"}
+}
