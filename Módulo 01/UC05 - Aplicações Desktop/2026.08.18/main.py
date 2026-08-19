@@ -1,5 +1,7 @@
 import customtkinter as ctk
-from tkinter import ttk, messagebox #ttk para fazer a tabela
+from tkinter import ttk, messagebox
+# ttk para fazer a tabela
+# messagebox para abrir caixinhas de alertas
 import database
 
 # FUNÇÕES ======================
@@ -8,11 +10,11 @@ def adicionar():
     telefone = entry_telefone.get()
     email = entry_email.get()
 
-    #validação de string vazia ou espaços em branco
-    if nome.strip() == "" and telefone.strip() == "" and email.strip() =="":
+    # validação de string vazia ou espaços em branco
+    if nome.strip() == "" or telefone.strip() == "" or email.strip() =="":
         return messagebox.showwarning('Atenção',"Os campos não podem estar em branco!")
 
-    #=== Adicionar dados no banco ===
+    # === Adicionar dados no banco ===
     database.adicionar_contato(nome, telefone, email)
 
 
@@ -26,7 +28,7 @@ janela.geometry('600x680')
 titulo = ctk.CTkLabel(janela,text='Cadastro',font=('Arial', 28, 'bold'))
 titulo.pack()
 
-# CAMPOS DE ENTRADA(Nome,Telefone,Email) ======================
+# CAMPOS DE ENTRADA (Nome,Telefone,Email) ======================
 frame_formulario = ctk.CTkFrame(janela)
 frame_formulario.pack(padx=20, pady=20, fill="x")
 
@@ -57,9 +59,9 @@ entry_email.grid(row=2, column=1, padx=10, pady=10, sticky="ew")
 
 # TREEVIEW (lista de contatos) ======================
 colunas = ("Nome", "Telefone", "Email")
-tabela = ttk.Treeview(janela, columns=colunas, show="headings") #cria o objeto tabela
+tabela = ttk.Treeview(janela, columns=colunas, show="headings") # cria o objeto tabela
 
-tabela.heading("Nome", text="Nome") #heading é de cabeçalho
+tabela.heading("Nome", text="Nome") # heading é de cabeçalho
 tabela.heading("Telefone", text="Telefone")
 tabela.heading("Email", text="Email")
 

@@ -5,18 +5,13 @@ ARQUIVO = "2026.08.18/contatos.json"
 
 
 def carregar_contatos():
-    if not os.path.exists(ARQUIVO):
+    if not os.path.exists(ARQUIVO): # se a pasta não existir vai ser criada com []
         return []
-    with open(ARQUIVO, "r", encoding="utf-8") as contatos:
+    with open(ARQUIVO, "r", encoding="utf-8") as contatos: # se a pasta já existir vai ser carregada em python
         return json.load(contatos)
 
 
 def salvar_contatos(lista_contatos):
-    pasta = os.path.dirname(ARQUIVO)
-
-    if pasta and not os.path.exists(pasta):
-        os.makedirs(pasta) # criar a pasta json se ela n existir
-
     with open(ARQUIVO, "w", encoding="utf-8") as arquivo:
         json.dump(lista_contatos, arquivo, indent=4, ensure_ascii=False)
         # indent=4 (dar espaços para ficar organizado)
