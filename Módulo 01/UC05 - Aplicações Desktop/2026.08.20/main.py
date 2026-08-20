@@ -1,7 +1,5 @@
 import customtkinter as ctk
 from tkinter import ttk, messagebox
-# ttk para fazer a tabela
-# messagebox para abrir caixinhas de alertas
 import database
 
 # FUNÇÕES ======================
@@ -10,37 +8,84 @@ def adicionar():
     telefone = entry_telefone.get()
     email = entry_email.get()
 
-    # validação de string vazia ou espaços em branco
     if nome.strip() == "" or telefone.strip() == "" or email.strip() =="":
-        return messagebox.showwarning('Atenção',"Os campos não podem estar em branco!")
+        return messagebox.showwarning("Atenção","Os campos não podem estar em branco!")
 
-    # === Adicionar dados no banco ===
     database.adicionar_contato(nome, telefone, email)
 
-def atualizar_tabela():
-    # 1. limpa tudo que já está na tabela
-    tabela.delete(*tabela.get_children())# pega todas as linhas da tabela
+    entry_nome.delete(0, "end")
+    entry_telefone.delete(0, "end")
+    entry_email.delete(0, "end")
 
-    # 2. carregar os contatos atualizados do JSON
+    atualizar_tabela()
+
+def atualizar_tabela():
+    tabela.delete(*tabela.get_children())
+
     contatos = database.carregar_contatos()
 
-    # 3. inserir cada contato como uma linha nova na tabela
     for contato in contatos:
         tabela.insert("", "end", values=(contato["nome"], contato["telefone"], contato["email"]))
 
 def excluir():
-    selecionado = tabela.index(selecionado[0])
+    selecionado = tabela.selection()
+
+    if not selecionado:
+        return messagebox.showwarning("Atenção!", "Selecione um contato para excluir.")
 
     indice = tabela.index(selecionado[0])
 
     confirmar = messagebox.askyesno("Confirmar exclusão", "Tem certeza?")
     if confirmar:
-        # carregar os arquivos json
         contatos = database.carregar_contatos()
         contatos.pop(indice)
 
+        database.salvar_contatos(contatos)
+        atualizar_tabela()
+
 def abrir_popup_editar():
     selecionado = tabela.selection()
+
+    if not selecionado:
+        return messagebox.showwarning("Atenção!", "Selecione um contato para editar.")
+    
+    indice = tabela.index(selecionado[0])
+    
+    contatos = database.carregar_contatos()
+    contato_atual = contatos[indice]
+    
+    # janela pop-up
+    popup = ctk.CTkToplevel(janela)
+    popup.title("Editar Contato")
+    popup.geometry("350x300")
+    popup.grab_set()
+    
+    ctk.CTkLabel(popup, text="Nome:").pack(anchor="w", padx=20, pady=(20, 0))
+    entry_nome_popup = ctk.CTkEntry(popup)
+    entry_nome_popup.pack(fill="x", padx=20)
+    entry_nome_popup.insert(0, contato_atual["nome"])
+ 
+    ctk.CTkLabel(popup, text="Telefone:").pack(anchor="w", padx=20, pady=(10, 0))
+    entry_telefone_popup = ctk.CTkEntry(popup)
+    entry_telefone_popup.pack(fill="x", padx=20)
+    entry_telefone_popup.insert(0, contato_atual["telefone"])
+ 
+    ctk.CTkLabel(popup, text="Email:").pack(anchor="w", padx=20, pady=(10, 0))
+    entry_email_popup = ctk.CTkEntry(popup)
+    entry_email_popup.pack(fill="x", padx=20)
+    entry_email_popup.insert(0, contato_atual["email"])
+
+    def salvar_edicao():
+        novo_nome = entry_nome_popup.get()
+        novo_telefone = entry_telefone_popup.get()
+        novo_email = entry_email_popup.get()
+
+        database.atualizar_contato(indice, novo_nome, novo_telefone, novo_email)
+        atualizar_tabela()
+        popup.destroy()
+        
+    botao_salvar = ctk.CTkButton(popup, text="Salvar", command=salvar_edicao)
+    botao_salvar.pack(pady=20)
 
 # Configurações da janela principal ======================
 janela = ctk.CTk()
@@ -99,11 +144,12 @@ frame_botoes.pack(padx=20, pady=(0, 20))
 botao_adicionar = ctk.CTkButton(frame_botoes, text="Adicionar", command=adicionar)
 botao_adicionar.pack(padx=5, side="left")
 
-botao_editar = ctk.CTkButton(frame_botoes, text="Editar")
+botao_editar = ctk.CTkButton(frame_botoes, text="Editar", command=abrir_popup_editar)
 botao_editar.pack(padx=5, side="left")
 
-botao_excluir = ctk.CTkButton(frame_botoes, text="Excluir", fg_color="#d9534f", hover_color="#c9302c")
+botao_excluir = ctk.CTkButton(frame_botoes, text="Excluir", fg_color="#d9534f", hover_color="#c9302c", command=excluir)
 botao_excluir.pack(padx=5, side="left")
 
+atualizar_tabela()
 
 janela.mainloop()

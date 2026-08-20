@@ -1,7 +1,7 @@
 import json
-import os # mexer nos arquivos do windows
+import os
 
-ARQUIVO = "2026.08.19/contatos.json"
+ARQUIVO = "2026.08.20/contatos.json"
 
 
 def carregar_contatos():
@@ -40,4 +40,7 @@ def atualizar_contato(indice, nome, telefone, email):
 
 
 def excluir_contato(indice):
-    pass
+    contatos = carregar_contatos()
+    if 0 <= indice < len(contatos):
+        contatos.pop(indice)
+        salvar_contatos(contatos)
