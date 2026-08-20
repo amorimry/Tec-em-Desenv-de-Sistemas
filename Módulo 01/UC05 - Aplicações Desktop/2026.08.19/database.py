@@ -1,7 +1,7 @@
 import json
 import os # mexer nos arquivos do windows
 
-ARQUIVO = "2026.08.18/contatos.json"
+ARQUIVO = "2026.08.19/contatos.json"
 
 
 def carregar_contatos():

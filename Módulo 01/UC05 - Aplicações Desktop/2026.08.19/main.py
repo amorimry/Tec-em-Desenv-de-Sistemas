@@ -17,6 +17,30 @@ def adicionar():
     # === Adicionar dados no banco ===
     database.adicionar_contato(nome, telefone, email)
 
+def atualizar_tabela():
+    # 1. limpa tudo que já está na tabela
+    tabela.delete(*tabela.get_children())# pega todas as linhas da tabela
+
+    # 2. carregar os contatos atualizados do JSON
+    contatos = database.carregar_contatos()
+
+    # 3. inserir cada contato como uma linha nova na tabela
+    for contato in contatos:
+        tabela.insert("", "end", values=(contato["nome"], contato["telefone"], contato["email"]))
+
+def excluir():
+    selecionado = tabela.index(selecionado[0]) # pega o indice do item selecionado
+
+    indice = tabela.index(selecionado[0])
+
+    confirmar = messagebox.askyesno("Confirmar exclusão", "Tem certeza?")
+    if confirmar:
+        # carregar os arquivos json
+        contatos = database.carregar_contatos()
+        contatos.pop(indice)
+
+def abrir_popup_editar():
+    selecionado = tabela.selection()
 
 # Configurações da janela principal ======================
 janela = ctk.CTk()
