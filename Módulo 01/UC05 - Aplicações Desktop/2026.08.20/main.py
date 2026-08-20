@@ -4,44 +4,45 @@ import database
 
 # FUNÇÕES ======================
 def adicionar():
-    nome = entry_nome.get()
+    nome = entry_nome.get() # Captura o que o usuário digitou usando .get() nos campos de texto da tela
     telefone = entry_telefone.get()
     email = entry_email.get()
 
-    if nome.strip() == "" or telefone.strip() == "" or email.strip() =="":
-        return messagebox.showwarning("Atenção","Os campos não podem estar em branco!")
+    if nome.strip() == "" or telefone.strip() == "" or email.strip() =="": # O método .strip() remove espaços em branco invisíveis
+        return messagebox.showwarning("Atenção","Os campos não podem estar em branco!") # Se o usuário digitar apenas espaços, o sistema bloqueia usando o messagebox.showwarning
 
-    database.adicionar_contato(nome, telefone, email)
+    database.adicionar_contato(nome, telefone, email) # Se os dados forem válidos, ela envia para o database.adicionar_contato()
 
-    entry_nome.delete(0, "end")
+    entry_nome.delete(0, "end") # Limpa os campos da tela com .delete(0, "end")
     entry_telefone.delete(0, "end")
     entry_email.delete(0, "end")
 
-    atualizar_tabela()
+    atualizar_tabela() # Manda a tabela se redesenhar com atualizar_tabela()
 
-def atualizar_tabela():
-    tabela.delete(*tabela.get_children())
+def atualizar_tabela(): # Esta é a função mais importante para a tela, toda vez que algo muda (adiciona, edita ou exclui), ela é chamada
+    tabela.delete(*tabela.get_children()) # Apaga tudo que está desenhado visualmente na tabela para não duplicar dados
 
-    contatos = database.carregar_contatos()
+    contatos = database.carregar_contatos() # Busca a lista atualizada do arquivo JSON
 
-    for contato in contatos:
-        tabela.insert("", "end", values=(contato["nome"], contato["telefone"], contato["email"]))
+    for contato in contatos: # Esse laço passa de contato em contato
+        tabela.insert("", "end", values=(contato["nome"], contato["telefone"], contato["email"])) # Usa tabela.insert() para desenhar a linha com os valores correspondentes nas colunas
 
 def excluir():
-    selecionado = tabela.selection()
+    selecionado = tabela.selection() # Descobre qual linha o usuário clicou na tabela
 
     if not selecionado:
         return messagebox.showwarning("Atenção!", "Selecione um contato para excluir.")
 
-    indice = tabela.index(selecionado[0])
+    indice = tabela.index(selecionado[0]) # Transforma essa linha clicada em um número de índice (0 para a primeira linha, 1 para a segunda...)
 
-    confirmar = messagebox.askyesno("Confirmar exclusão", "Tem certeza?")
+    confirmar = messagebox.askyesno("Confirmar exclusão", "Tem certeza?") # Abre uma caixinha de confirmação
     if confirmar:
         contatos = database.carregar_contatos()
         contatos.pop(indice)
 
         database.salvar_contatos(contatos)
         atualizar_tabela()
+        # Se o usuário clicar em "Sim", ela chama o banco de dados para deletar pelo número do índice e atualiza a tel
 
 def abrir_popup_editar():
     selecionado = tabela.selection()
@@ -49,16 +50,15 @@ def abrir_popup_editar():
     if not selecionado:
         return messagebox.showwarning("Atenção!", "Selecione um contato para editar.")
     
-    indice = tabela.index(selecionado[0])
+    indice = tabela.index(selecionado[0]) # Identifica qual linha foi selecionada e pega o índice numérico dela
     
     contatos = database.carregar_contatos()
     contato_atual = contatos[indice]
     
-    # janela pop-up
-    popup = ctk.CTkToplevel(janela)
+    popup = ctk.CTkToplevel(janela) # Abre uma nova janela flutuante usando ctk.CTkToplevel(janela)
     popup.title("Editar Contato")
     popup.geometry("350x300")
-    popup.grab_set()
+    popup.grab_set() # É um truque importante: ele bloqueia a janela de trás para que o usuário seja obrigado a fechar ou salvar o pop-up antes de mexer em outra coisa
     
     ctk.CTkLabel(popup, text="Nome:").pack(anchor="w", padx=20, pady=(20, 0))
     entry_nome_popup = ctk.CTkEntry(popup)
@@ -76,13 +76,13 @@ def abrir_popup_editar():
     entry_email_popup.insert(0, contato_atual["email"])
 
     def salvar_edicao():
-        novo_nome = entry_nome_popup.get()
+        novo_nome = entry_nome_popup.get() # Quando o botão "Salvar" do pop-up é clicado, ela pega os novos textos digitados
         novo_telefone = entry_telefone_popup.get()
         novo_email = entry_email_popup.get()
 
         database.atualizar_contato(indice, novo_nome, novo_telefone, novo_email)
         atualizar_tabela()
-        popup.destroy()
+        popup.destroy() # Envia para o database.atualizar_contato(indice, ...) e fecha a janelinha com popup.destroy()
         
     botao_salvar = ctk.CTkButton(popup, text="Salvar", command=salvar_edicao)
     botao_salvar.pack(pady=20)
